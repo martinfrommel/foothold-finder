@@ -203,5 +203,173 @@ enum SustainabilityCondition {
 
 //Enums end
 
+// MODELS START
 
+model User {
+  id        String           @id @db.Uuid
+  email     String           @unique
+  name      String?
+  avatar    String?
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
+  diaries   Diary[]
+  ownedGyms Gym[]            @relation("OwnedGyms")
+  Listing   Listing[]
+  ownedComs CommunityOwner[]
+
+  @@schema("public")
+}
+
+model Diary {
+  id            Int            @id @default(autoincrement())
+  date          DateTime
+  isPublic      Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId        String
+  climbedRoutes ClimbedRoute[]
+
+  @@schema("public")
+}
+
+model Route {
+  id                   Int                      @id @default(autoincrement())
+  name                 String
+  grade                String
+  location             String
+  style                ClimbingStyle
+  gradeYDS             GradeYDS?
+  gradeFont            GradeFont?
+  gradeHueco           GradeHueco?
+  gradeFrenchSport     GradeFrenchSport?
+  sustainabilityRating SustainabilityCondition?
+  description          String?
+  images               String[]
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+  crag                 Crag                     @relation(fields: [cragId], references: [id])
+  cragId               Int
+  diaries              ClimbedRoute[]
+
+  @@schema("public")
+}
+
+model ClimbedRoute {
+  id      Int   @id @default(autoincrement())
+  diaryId Int
+  routeId Int
+  diary   Diary @relation(fields: [diaryId], references: [id])
+  route   Route @relation(fields: [routeId], references: [id])
+
+  @@unique([diaryId, routeId])
+  @@schema("public")
+}
+
+model Crag {
+  id        Int      @id @default(autoincrement())
+  name      String
+  location  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  routes    Route[]
+  area      Area     @relation(fields: [areaId], references: [id])
+  areaId    Int
+  cragType  CragType
+
+  @@schema("public")
+}
+
+model Area {
+  id          Int         @id @default(autoincrement())
+  name        String
+  country     Country     @relation(fields: [countryCode], references: [code])
+  countryCode String
+  crags       Crag[]
+  gyms        Gym[]
+  communities Community[]
+
+  @@schema("public")
+}
+
+model Country {
+  code  String @id @db.VarChar(2)
+  name  String
+  areas Area[]
+
+  @@schema("public")
+}
+
+model Gym {
+  id          Int      @id @default(autoincrement())
+  name        String
+  location    String
+  description String?
+  rating      Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  owner       User     @relation("OwnedGyms", fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ownerId     String
+  area        Area     @relation(fields: [areaId], references: [id])
+  areaId      Int
+
+  @@schema("public")
+}
+
+model Community {
+  id          Int     @id @default(autoincrement())
+  name        String
+  location    String
+  description String?
+  rating      Rating?
+
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  owners    CommunityOwner[]
+  area      Area             @relation(fields: [areaId], references: [id])
+  areaId    Int
+
+  @@schema("public")
+}
+
+model CommunityOwner {
+  communityId Int
+  community   Community @relation(fields: [communityId], references: [id])
+  userId      String
+  User        User      @relation(fields: [userId], references: [id])
+
+  @@id([communityId, userId])
+  @@schema("public")
+}
+
+model Listing {
+  id          Int              @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  condition   ProductCondition
+  images      String[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  user        User             @relation(fields: [userId], references: [id])
+  userId      String
+  product     Product          @relation(fields: [productId], references: [id])
+  productId   Int
+
+  @@schema("public")
+}
+
+model Product {
+  id          Int              @id @default(autoincrement())
+  name        String
+  category    String
+  brand       String
+  description String?
+  condition   ProductCondition
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  listings    Listing[]
+
+  @@schema("public")
+}
 
