@@ -27,7 +27,7 @@ Please note that only the first version of Foothold Finder will be made availabl
 
 1. Clone the repository:
 
-        git clone https://github.com/yourusername/foothold-finder.git
+        git clone https://github.com/martinfrommel/foothold-finder.git
         cd foothold-finder
 
 2. Install dependencies:
