@@ -14,8 +14,8 @@ declare module '@redwoodjs/router' {
     gyms: (params?: RouteParams<"/gyms"> & QueryParams) => "/gyms"
     profile: (params?: RouteParams<"/profile"> & QueryParams) => "/profile"
     dashboard: (params?: RouteParams<"/dashboard"> & QueryParams) => "/dashboard"
-    signUp: (params?: RouteParams<"/sign-up"> & QueryParams) => "/sign-up"
     signIn: (params?: RouteParams<"/sign-in"> & QueryParams) => "/sign-in"
+    signUp: (params?: RouteParams<"/signup"> & QueryParams) => "/signup"
   }
 }
 

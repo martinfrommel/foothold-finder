@@ -4,7 +4,6 @@ import CommunitiesPageType from '/Users/martinfrommel/Documents/Projects/Foothol
 import CommunityDetailsPageType from '/Users/martinfrommel/Documents/Projects/FootholdFinder/App/dev/web/src/pages/CommunityDetailsPage/CommunityDetailsPage'
 import DashboardPageType from '/Users/martinfrommel/Documents/Projects/FootholdFinder/App/dev/web/src/pages/DashboardPage/DashboardPage'
 import FatalErrorPageType from '/Users/martinfrommel/Documents/Projects/FootholdFinder/App/dev/web/src/pages/FatalErrorPage/FatalErrorPage'
-import ForgotPasswordPageType from '/Users/martinfrommel/Documents/Projects/FootholdFinder/App/dev/web/src/pages/ForgotPasswordPage/ForgotPasswordPage'
 import GymDetailsPageType from '/Users/martinfrommel/Documents/Projects/FootholdFinder/App/dev/web/src/pages/GymDetailsPage/GymDetailsPage'
 import GymsPageType from '/Users/martinfrommel/Documents/Projects/FootholdFinder/App/dev/web/src/pages/GymsPage/GymsPage'
 import HomePageType from '/Users/martinfrommel/Documents/Projects/FootholdFinder/App/dev/web/src/pages/HomePage/HomePage'
@@ -19,7 +18,6 @@ declare global {
   const CommunityDetailsPage: typeof CommunityDetailsPageType
   const DashboardPage: typeof DashboardPageType
   const FatalErrorPage: typeof FatalErrorPageType
-  const ForgotPasswordPage: typeof ForgotPasswordPageType
   const GymDetailsPage: typeof GymDetailsPageType
   const GymsPage: typeof GymsPageType
   const HomePage: typeof HomePageType
