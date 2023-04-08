@@ -7,12 +7,26 @@
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
-import { Router, Route, Set } from '@redwoodjs/router'
+import { Router, Route, Set, routes } from '@redwoodjs/router'
 
 import { useAuth } from './auth'
 import AuthLayout from './layouts/AuthLayout/AuthLayout'
 import BackendLayout from './layouts/BackendLayout/BackendLayout'
 import FrontendLayout from './layouts/FrontendLayout/FrontendLayout'
+
+export const frontendNavRoutes = [
+  { label: 'Home', route: () => routes.home() },
+  { label: 'About', route: () => routes.about() },
+  // add more routes as needed
+]
+
+export const backendNavRoutes = [
+  { label: 'Dashboard', route: () => routes.dashboard() },
+  { label: 'Profile', route: () => routes.profile() },
+  { label: 'Gyms', route: () => routes.gyms() },
+]
+
+export const authNavRoutes = [{ label: 'Back', route: () => routes.home() }]
 
 const Routes = () => {
   return (
@@ -31,7 +45,6 @@ const Routes = () => {
         <Route path="/dashboard" page={DashboardPage} name="dashboard" />
       </Set>
       <Set wrap={AuthLayout}>
-        {' '}
         <Route path="/sign-in" page={SignInPage} name="signIn" />
         <Route path="/signup" page={SignUpPage} name="signUp" />
       </Set>

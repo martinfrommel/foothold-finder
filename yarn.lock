@@ -3346,6 +3346,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@heroicons/react@npm:^2.0.17":
+  version: 2.0.17
+  resolution: "@heroicons/react@npm:2.0.17"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 34f1b13989ccdbea439c9f0555d7806c803be045da7753ab0167fa8ad317b13b193cec58b324f242d7b2123cd1d1d092d45708febb25304eecf19a301bfd564c
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.8":
   version: 0.11.8
   resolution: "@humanwhocodes/config-array@npm:0.11.8"
@@ -21085,6 +21094,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-daisyui@npm:^3.1.2":
+  version: 3.1.2
+  resolution: "react-daisyui@npm:3.1.2"
+  peerDependencies:
+    daisyui: ^2.51.5
+    react: ">=16"
+    react-dom: ">=16"
+    tailwindcss: ">=3.2.7"
+  checksum: 276eed03bb032e798ec9257a9864a2f39fe8f8e45b2e11c62cd99d77025df4dd813ff1b644953fc3fcc44280ac71a811e54ca06562a48e529416753f690ed63d
+  languageName: node
+  linkType: hard
+
 "react-docgen-typescript@npm:^2.1.1":
   version: 2.2.2
   resolution: "react-docgen-typescript@npm:2.2.2"
@@ -25072,6 +25093,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "web@workspace:web"
   dependencies:
+    "@heroicons/react": ^2.0.17
     "@redwoodjs/auth-supabase-web": 4.4.3
     "@redwoodjs/forms": 4.4.3
     "@redwoodjs/router": 4.4.3
@@ -25085,6 +25107,7 @@ __metadata:
     postcss-loader: ^7.2.4
     prop-types: 15.8.1
     react: 17.0.2
+    react-daisyui: ^3.1.2
     react-dom: 17.0.2
     tailwindcss: ^3.3.1
   languageName: unknown
