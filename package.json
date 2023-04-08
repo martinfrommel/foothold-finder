@@ -3,13 +3,13 @@
   "workspaces": {
     "packages": [
       "api",
-      "web",
-      "cms"
+      "web"
     ]
   },
   "devDependencies": {
     "@redwoodjs/auth-supabase-setup": "4.4.3",
-    "@redwoodjs/core": "4.4.3"
+    "@redwoodjs/core": "4.4.3",
+    "prettier-plugin-tailwindcss": "^0.2.7"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
