@@ -1,5 +1,7 @@
 import { Navbar } from 'react-daisyui'
 
+import { Toaster } from '@redwoodjs/web/dist/toast'
+
 import BackButton from 'src/components/BackButton/BackButton'
 
 // import { NavLink } from '@redwoodjs/router'
@@ -14,6 +16,8 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <>
       <div className="flex h-screen flex-col">
+        <Toaster position="top-right" />
+
         <Navbar className="p-4">
           <BackButton />
         </Navbar>
