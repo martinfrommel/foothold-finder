@@ -1,14 +1,19 @@
 import { Menu } from 'react-daisyui'
 
-import { Link, NavLink, routes } from '@redwoodjs/router'
+import { Link, routes } from '@redwoodjs/router'
+
+import AuthButton from '../AuthButton/AuthButton'
 
 import logo from './logo.png'
 
 interface NavbarProps {
   className?: string
   showLink?: boolean
-  showSignIn?: boolean
-  showSignUp?: boolean
+  authLinks?: {
+    signIn?: boolean
+    signUp?: boolean
+    [key: string]: boolean
+  }
   logoComponent?: React.ReactNode
   logoAltText?: string
   menuLinkClasses?: string
@@ -18,8 +23,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({
   className,
   showLink = true,
-  showSignIn = true,
-  showSignUp = true,
+  authLinks = { signIn: true, signUp: true },
   logoComponent = <img src={logo} alt="Logo" className="h-12" />,
   // logoAltText = 'Logo',
   menuLinkClasses = 'transition-all hover:font-semibold',
@@ -53,24 +57,7 @@ const Navbar: React.FC<NavbarProps> = ({
             id="signin-section"
             className="ml-4 hidden items-center md:block"
           >
-            {showSignIn && (
-              <NavLink
-                to={routes.signIn()}
-                className="btn-primary btn"
-                activeClassName="underline"
-              >
-                Sign in
-              </NavLink>
-            )}
-            {showSignUp && (
-              <NavLink
-                to={routes.signUp()}
-                className="btn-secondary btn ml-2"
-                activeClassName="underline"
-              >
-                Sign up
-              </NavLink>
-            )}
+            <AuthButton />
           </div>
         </div>
       </div>

@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import DashboardNav from './DashboardNav'
+import AuthButton from './AuthButton'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('DashboardNav', () => {
+describe('AuthButton', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<DashboardNav />)
+      render(<AuthButton />)
     }).not.toThrow()
   })
 })

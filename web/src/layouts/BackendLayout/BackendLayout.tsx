@@ -1,7 +1,6 @@
-import { Navbar } from 'react-daisyui'
-
 import { NavLink } from '@redwoodjs/router'
 
+import Navbar from 'src/components/Navbar/Navbar'
 import { backendNavRoutes } from 'src/Routes'
 
 type BackendLayoutProps = {
@@ -12,7 +11,7 @@ const BackendLayout = ({ children }: BackendLayoutProps) => {
   return (
     <>
       <div className="flex h-screen flex-col">
-        <Navbar>
+        <Navbar className="">
           {backendNavRoutes.map((link, index) => (
             <NavLink
               key={index}

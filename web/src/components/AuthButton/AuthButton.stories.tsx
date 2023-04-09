@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof DashboardNav> = (args) => {
-//   return <DashboardNav {...args} />
+// export const generated: ComponentStory<typeof AuthButton> = (args) => {
+//   return <AuthButton {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import DashboardNav from './DashboardNav'
+import AuthButton from './AuthButton'
 
 export const generated = () => {
-  return <DashboardNav />
+  return <AuthButton />
 }
 
 export default {
-  title: 'Components/DashboardNav',
-  component: DashboardNav,
-} as ComponentMeta<typeof DashboardNav>
+  title: 'Components/AuthButton',
+  component: AuthButton,
+} as ComponentMeta<typeof AuthButton>
