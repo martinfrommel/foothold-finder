@@ -26,7 +26,9 @@ const FrontendLayout = ({ children }: FrontendLayoutProps) => {
             </NavLink>
           ))}
         </Navbar>
-        <div className="flex-1">{children}</div>
+        <div className="flex flex-1 flex-col items-center justify-center">
+          {children}
+        </div>
       </div>
     </>
   )

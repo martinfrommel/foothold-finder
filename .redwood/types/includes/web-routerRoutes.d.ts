@@ -8,6 +8,7 @@ declare module '@redwoodjs/router' {
     // Only "<Route />" components with a "name" and "path" prop will be populated here.
     about: (params?: RouteParams<"/about"> & QueryParams) => "/about"
     home: (params?: RouteParams<"/"> & QueryParams) => "/"
+    features: (params?: RouteParams<"/features"> & QueryParams) => "/features"
     communityDetails: (params?: RouteParams<"/community-details"> & QueryParams) => "/community-details"
     communities: (params?: RouteParams<"/communities"> & QueryParams) => "/communities"
     gymDetails: (params?: RouteParams<"/gym-details"> & QueryParams) => "/gym-details"
@@ -15,7 +16,7 @@ declare module '@redwoodjs/router' {
     profile: (params?: RouteParams<"/profile"> & QueryParams) => "/profile"
     dashboard: (params?: RouteParams<"/dashboard"> & QueryParams) => "/dashboard"
     signIn: (params?: RouteParams<"/sign-in"> & QueryParams) => "/sign-in"
-    signUp: (params?: RouteParams<"/signup"> & QueryParams) => "/signup"
+    signUp: (params?: RouteParams<"/sign-up"> & QueryParams) => "/sign-up"
   }
 }
 

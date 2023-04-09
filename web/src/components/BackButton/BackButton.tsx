@@ -1,3 +1,4 @@
+// src/components/BackButton/BackButton.tsx
 import { Button } from 'react-daisyui'
 
 interface BackButtonProps {
@@ -27,11 +28,14 @@ const BackButton: React.FC<BackButtonProps> = ({
     if (onClick) {
       onClick(event)
     } else {
-      if (window.history.length > 1) {
-        // If there's a previous location in the history, navigate back
+      const previousLocation = document.referrer
+      const currentLocation = window.location.href
+
+      if (window.history.length > 1 && previousLocation !== currentLocation) {
+        // If there's a previous location in the history and it's not the same as the current location, navigate back
         window.history.back()
       } else {
-        // If there's no previous location, navigate to the home page
+        // If there's no previous location or it's the same as the current location, navigate to the home page
         window.location.assign('/')
       }
     }

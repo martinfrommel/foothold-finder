@@ -17,7 +17,7 @@ import FrontendLayout from './layouts/FrontendLayout/FrontendLayout'
 export const frontendNavRoutes = [
   { label: 'Home', route: () => routes.home() },
   { label: 'About', route: () => routes.about() },
-  // add more routes as needed
+  { label: 'Features', route: () => routes.features() },
 ]
 
 export const backendNavRoutes = [
@@ -25,6 +25,8 @@ export const backendNavRoutes = [
   { label: 'Profile', route: () => routes.profile() },
   { label: 'Gyms', route: () => routes.gyms() },
 ]
+
+export const privateRoutes = ['/community-details', '/communities', '/gym-details', '/gyms', '/profile', '/dashboard']
 
 export const authNavRoutes = [{ label: 'Back', route: () => routes.home() }]
 
@@ -34,9 +36,10 @@ const Routes = () => {
       <Set wrap={FrontendLayout}>
         <Route path="/about" page={AboutPage} name="about" />
         <Route path="/" page={HomePage} name="home" />
+        <Route path="/features" page={FeaturesPage} name="features" />
         <Route notfound page={NotFoundPage} />
       </Set>
-      <Set wrap={BackendLayout}>
+      <Set unauthenticated="signIn" wrap={BackendLayout} private>
         <Route path="/community-details" page={CommunityDetailsPage} name="communityDetails" />
         <Route path="/communities" page={CommunitiesPage} name="communities" />
         <Route path="/gym-details" page={GymDetailsPage} name="gymDetails" />
@@ -46,7 +49,7 @@ const Routes = () => {
       </Set>
       <Set wrap={AuthLayout}>
         <Route path="/sign-in" page={SignInPage} name="signIn" />
-        <Route path="/signup" page={SignUpPage} name="signUp" />
+        <Route path="/sign-up" page={SignUpPage} name="signUp" />
       </Set>
     </Router>
   )
