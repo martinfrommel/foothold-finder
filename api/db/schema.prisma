@@ -1,14 +1,12 @@
 datasource db {
   provider = "postgres"
   url      = env("DATABASE_URL")
-  schemas  = ["public"]
   directUrl = env("DIRECT_DB_URL")
 }
 
 generator client {
   provider        = "prisma-client-js"
   binaryTargets   = "native"
-  previewFeatures = ["multiSchema"]
 }
 
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`
@@ -25,7 +23,6 @@ enum ClimbingStyle {
   Ice
   Mixed
 
-  @@schema("public")
 }
 
 enum GradeYDS {
@@ -51,7 +48,6 @@ enum GradeYDS {
   YDS_519
   YDS_520
 
-  @@schema("public")
 }
 
 enum GradeFont {
@@ -87,7 +83,6 @@ enum GradeFont {
   Font_9C
   Font_9Cplus
 
-  @@schema("public")
 }
 
 enum GradeHueco {
@@ -111,7 +106,6 @@ enum GradeHueco {
   Hueco_V16
   Hueco_V17
 
-  @@schema("public")
 }
 
 enum GradeFrenchSport {
@@ -152,7 +146,6 @@ enum GradeFrenchSport {
   FS_9b_plus
   FS_9c
 
-  @@schema("public")
 }
 
 enum ProductCondition {
@@ -162,7 +155,6 @@ enum ProductCondition {
   Fair
   Poor
 
-  @@schema("public")
 }
 
 enum CragType {
@@ -171,7 +163,6 @@ enum CragType {
   Bouldering
   Mixed
 
-  @@schema("public")
 }
 
 enum GymType {
@@ -179,7 +170,6 @@ enum GymType {
   RopedClimbing
   Combined
 
-  @@schema("public")
 }
 
 enum Rating {
@@ -189,7 +179,6 @@ enum Rating {
   FourStars
   FiveStars
 
-  @@schema("public")
 }
 
 enum SustainabilityCondition {
@@ -199,7 +188,6 @@ enum SustainabilityCondition {
   Poor
   VeryPoor
 
-  @@schema("public")
 }
 
 //Enums end
@@ -218,7 +206,6 @@ model User {
   Listing   Listing[]
   ownedComs CommunityOwner[]
 
-  @@schema("public")
 }
 
 model Diary {
@@ -231,7 +218,6 @@ model Diary {
   userId        String
   climbedRoutes ClimbedRoute[]
 
-  @@schema("public")
 }
 
 model Route {
@@ -253,7 +239,6 @@ model Route {
   cragId               Int
   diaries              ClimbedRoute[]
 
-  @@schema("public")
 }
 
 model ClimbedRoute {
@@ -264,7 +249,6 @@ model ClimbedRoute {
   route   Route @relation(fields: [routeId], references: [id])
 
   @@unique([diaryId, routeId])
-  @@schema("public")
 }
 
 model Crag {
@@ -278,7 +262,6 @@ model Crag {
   areaId    Int
   cragType  CragType
 
-  @@schema("public")
 }
 
 model Area {
@@ -290,7 +273,6 @@ model Area {
   gyms        Gym[]
   communities Community[]
 
-  @@schema("public")
 }
 
 model Country {
@@ -298,7 +280,6 @@ model Country {
   name  String
   areas Area[]
 
-  @@schema("public")
 }
 
 model Gym {
@@ -314,7 +295,6 @@ model Gym {
   area        Area     @relation(fields: [areaId], references: [id])
   areaId      Int
 
-  @@schema("public")
 }
 
 model Community {
@@ -330,7 +310,6 @@ model Community {
   area      Area             @relation(fields: [areaId], references: [id])
   areaId    Int
 
-  @@schema("public")
 }
 
 model CommunityOwner {
@@ -340,7 +319,6 @@ model CommunityOwner {
   User        User      @relation(fields: [userId], references: [id])
 
   @@id([communityId, userId])
-  @@schema("public")
 }
 
 model Listing {
@@ -357,7 +335,6 @@ model Listing {
   product     Product          @relation(fields: [productId], references: [id])
   productId   Int
 
-  @@schema("public")
 }
 
 model Product {
@@ -371,6 +348,5 @@ model Product {
   updatedAt   DateTime         @updatedAt
   listings    Listing[]
 
-  @@schema("public")
 }
 

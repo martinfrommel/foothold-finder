@@ -9,12 +9,14 @@ export interface AuthButtonProps {
   signInClassName?: string
   signUpClassName?: string
   logoutClassName?: string
+  dashboardClassName?: string
 }
 
 const AuthButton: React.FC<AuthButtonProps> = ({
   signInClassName,
   signUpClassName,
   logoutClassName,
+  dashboardClassName,
 }) => {
   const { isAuthenticated, logOut } = useAuth()
 
@@ -22,24 +24,35 @@ const AuthButton: React.FC<AuthButtonProps> = ({
     signIn: `btn-secondary ${signInClassName}`,
     signUp: `btn-primary ${signUpClassName}`,
     logout: `btn-primary ${logoutClassName}`,
+    dashboard: `btn-secondary ${dashboardClassName}`,
   }
 
   const buttonText = {
     signIn: 'Sign in',
     signUp: 'Sign up',
     logout: 'Logout',
+    dashboard: 'Dashboard',
   }
 
   const buttonRoute = {
     signIn: routes.signIn(),
     signUp: routes.signUp(),
+    dashboard: routes.dashboard(),
   }
 
   if (isAuthenticated) {
     return (
-      <Button className={`btn ${buttonClasses.logout}`} onClick={logOut}>
-        {buttonText.logout}
-      </Button>
+      <>
+        <Link
+          to={buttonRoute.dashboard}
+          className={`btn ${buttonClasses.dashboard}`}
+        >
+          {buttonText.dashboard}
+        </Link>
+        <Button className={`btn ${buttonClasses.logout} ml-2`} onClick={logOut}>
+          {buttonText.logout}
+        </Button>
+      </>
     )
   } else {
     return (

@@ -23,7 +23,6 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({
   className,
   showLink = true,
-  authLinks = { signIn: true, signUp: true },
   logoComponent = <img src={logo} alt="Logo" className="h-12" />,
   // logoAltText = 'Logo',
   menuLinkClasses = 'transition-all hover:font-semibold',

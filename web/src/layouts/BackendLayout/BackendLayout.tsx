@@ -11,7 +11,7 @@ const BackendLayout = ({ children }: BackendLayoutProps) => {
   return (
     <>
       <div className="flex h-screen flex-col">
-        <Navbar className="">
+        <Navbar showLink={false}>
           {backendNavRoutes.map((link, index) => (
             <NavLink
               key={index}
