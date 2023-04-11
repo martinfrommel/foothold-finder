@@ -18,6 +18,7 @@ interface NavbarProps {
   logoAltText?: string
   menuLinkClasses?: string
   menuActiveClasses?: string
+  useAuthModal?: boolean
 }
 
 const Navbar: React.FC<NavbarProps> = ({

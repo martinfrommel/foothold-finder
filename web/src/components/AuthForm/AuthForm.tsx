@@ -1,5 +1,14 @@
 // src/components/AuthForm/AuthForm.tsx
-import { Form, TextField, Submit, PasswordField } from '@redwoodjs/forms'
+import {
+  Form,
+  TextField,
+  Submit,
+  PasswordField,
+  EmailField,
+  SearchField,
+  DateField,
+  Label,
+} from '@redwoodjs/forms'
 import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
@@ -79,18 +88,60 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
   }
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full max-w-md">
+      {mode === 'signup' || mode === 'signin' ? (
+        <h1 className="my-2 text-center text-xl font-bold">
+          {mode === 'signup' ? 'Sign Up' : 'Sign In'}
+        </h1>
+      ) : null}
+
       <Form
         onSubmit={onSubmit}
-        className="mb-4 flex flex-col items-center justify-center space-y-3 rounded bg-neutral px-10 py-10 shadow-md"
+        className="mx-2 flex flex-col items-center justify-center space-y-3 rounded bg-neutral px-3 py-10 shadow-md"
       >
-        <TextField
+        {mode === 'signup' && (
+          <>
+            <TextField
+              name="firstname"
+              className="input-bordered input transition-all"
+              placeholder="First Name"
+              validation={{ required: true }}
+              errorClassName="input-bordered input border-red-500 border-2 transition-all"
+            />
+            <TextField
+              name="lastname"
+              className="input-bordered input transition-all"
+              placeholder="Last Name"
+              validation={{ required: false }}
+              errorClassName="input-bordered input border-red-500 border-2 transition-all"
+            />
+            <div className="space-x-2 ">
+              <Label className="font-semibold text-white" name="dob-label">
+                Date of Birth
+              </Label>
+              <DateField
+                name="dob"
+                className="input-bordered input transition-all"
+                placeholder="Date of Birth"
+                validation={{ required: false }}
+                errorClassName="input-bordered input border-red-500 border-2 transition-all"
+              />
+            </div>
+            <SearchField
+              name="country"
+              placeholder="Country/Residence"
+              className="input-bordered input transition-all"
+              validation={{ required: true }}
+              errorClassName="input-bordered input border-red-500 border-2 transition-all"
+            />
+          </>
+        )}
+        <EmailField
           name="email"
           className="input-bordered input transition-all"
           placeholder="Email"
           validation={{ required: true }}
           errorClassName="input-bordered input border-red-500 border-2 transition-all"
-          errorStyle={{ color: 'red' }}
         />
         <PasswordField
           name="password"
@@ -98,7 +149,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
           placeholder="Password"
           validation={{ required: true }}
           errorClassName="input-bordered input border-red-500 border-2 transition-all"
-          errorStyle={{ color: 'red' }}
         />
         <Submit className="btn-primary btn w-full">
           {mode === 'signup' ? 'Sign Up' : 'Sign In'}

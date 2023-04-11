@@ -14,7 +14,7 @@ const FrontendLayout = ({ children }: FrontendLayoutProps) => {
   return (
     <>
       <div className="flex h-screen flex-col">
-        <Navbar>
+        <Navbar useAuthModal={true}>
           {frontendNavRoutes.map((link, index) => (
             <NavLink
               key={index}
