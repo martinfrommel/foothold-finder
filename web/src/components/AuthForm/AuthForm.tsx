@@ -1,4 +1,4 @@
-// src/components/AuthForm/AuthForm.tsx
+// Import necessary form components and toast function
 import {
   Form,
   TextField,
@@ -11,21 +11,28 @@ import {
 } from '@redwoodjs/forms'
 import { toast } from '@redwoodjs/web/toast'
 
+// Import useAuth hook from auth module
 import { useAuth } from 'src/auth'
 
+// Define interface for component props
 interface AuthFormProps {
-  mode: 'signup' | 'signin'
-  onAuthSuccess?: () => void
+  mode: 'signup' | 'signin' // Indicates whether form is for signing up or signing in
+  onAuthSuccess?: () => void // Optional callback function to be called after successful authentication
 }
 
+// Define AuthForm component
 const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
+  // Obtain client object from useAuth hook
   const { client } = useAuth()
 
+  // Define function for handling errors during authentication
   const handleErrors = (error) => {
+    // Obtain error status and message
     const status = error.response?.status
     const message =
       error.message || 'An error occurred. Please try again later.'
 
+    // Display appropriate error message using toast function based on status code
     switch (status) {
       case 422:
         toast.error(
@@ -43,10 +50,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
     }
   }
 
+  // Define function for signing in with third-party provider
   const signInWithProvider = async (provider) => {
     try {
+      // Call appropriate method on client object to sign in with provider
       const response = await client.auth.signIn({ provider })
 
+      // Display success message and call onAuthSuccess callback on successful authentication
       if (response.error) {
         handleErrors(response.error)
       } else {
@@ -58,6 +68,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
         onAuthSuccess?.()
       }
     } catch (error) {
+      // Display error message and call handleErrors function on failed authentication
       console.error(
         `Error signing ${mode === 'signup' ? 'up' : 'in'} with ${provider}:`,
         error
@@ -66,8 +77,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
     }
   }
 
+  // Define function for submitting form data
   const onSubmit = async (data) => {
     try {
+      // Call appropriate method on client object to sign up or sign in user
       const response = await (mode === 'signup'
         ? client.auth.signUp
         : client.auth.signIn)({
@@ -75,6 +88,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
         password: data.password,
       })
 
+      // Display success message and call onAuthSuccess callback on successful authentication
       if (response.error) {
         handleErrors(response.error)
       } else {
@@ -82,25 +96,29 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
         onAuthSuccess?.()
       }
     } catch (error) {
+      // Display error message and call handleErrors function on failed authentication
       console.error(`Error signing ${mode === 'signup' ? 'up' : 'in'}:`, error)
       handleErrors(error)
     }
   }
-
+  // Render form JSX
   return (
     <div className="w-full max-w-md">
+      {/* Render heading based on mode prop */}
       {mode === 'signup' || mode === 'signin' ? (
         <h1 className="my-2 text-center text-xl font-bold">
           {mode === 'signup' ? 'Sign Up' : 'Sign In'}
         </h1>
       ) : null}
 
+      {/* Render RedwoodJS Form component with appropriate fields */}
       <Form
         onSubmit={onSubmit}
         className="mx-2 flex flex-col items-center justify-center space-y-3 rounded bg-neutral px-3 py-10 shadow-md"
       >
         {mode === 'signup' && (
           <>
+            {/* Render fields for additional sign up information */}
             <TextField
               name="firstname"
               className="input-bordered input transition-all"
@@ -116,6 +134,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
               errorClassName="input-bordered input border-red-500 border-2 transition-all"
             />
             <div className="space-x-2 ">
+              {/* Render label and field for date of birth */}
               <Label className="font-semibold text-white" name="dob-label">
                 Date of Birth
               </Label>
@@ -127,6 +146,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
                 errorClassName="input-bordered input border-red-500 border-2 transition-all"
               />
             </div>
+            {/* Render search field for country/residence */}
             <SearchField
               name="country"
               placeholder="Country/Residence"
@@ -136,6 +156,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
             />
           </>
         )}
+        {/* Render email and password fields */}
         <EmailField
           name="email"
           className="input-bordered input transition-all"
@@ -150,9 +171,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
           validation={{ required: true }}
           errorClassName="input-bordered input border-red-500 border-2 transition-all"
         />
+        {/* Render submit button */}
         <Submit className="btn-primary btn w-full">
           {mode === 'signup' ? 'Sign Up' : 'Sign In'}
         </Submit>
+        {/* Render buttons for signing in with third-party providers */}
         <div className="mt-4 flex space-x-3">
           <button
             className="btn-primary btn"
@@ -161,13 +184,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
           >
             {mode === 'signup' ? 'Sign Up' : 'Sign In'} with Google
           </button>
-          <button
-            className="btn-primary btn"
-            type="button"
-            onClick={() => signInWithProvider('github')}
-          >
-            {mode === 'signup' ? 'Sign Up' : 'Sign In'} with GitHub
-          </button>
+          {/* <button
+        className="btn-primary btn"
+        type="button"
+        onClick={() => signInWithProvider('github')}
+      >
+        {mode === 'signup' ? 'Sign Up' : 'Sign In'} with GitHub
+      </button> */}
         </div>
       </Form>
     </div>
