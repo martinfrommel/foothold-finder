@@ -1,34 +1,36 @@
+// src/components/AuthForm/AuthForm.tsx
 import { Form, TextField, Submit, PasswordField } from '@redwoodjs/forms'
 import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 
-interface SignUpFormProps {
-  onSignUpSuccess?: () => void
+interface AuthFormProps {
+  mode: 'signup' | 'signin'
+  onAuthSuccess?: () => void
 }
 
-const SignUpForm: React.FC<SignUpFormProps> = () => {
-  const { client, isAuthenticated } = useAuth()
+const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
+  const { client } = useAuth()
 
   const handleErrors = (error) => {
-    if (!error.response?.ok) {
-      const status = error.response?.status
-      const message =
-        error.message || 'An error occurred. Please try again later.'
+    const status = error.response?.status
+    const message =
+      error.message || 'An error occurred. Please try again later.'
 
-      switch (status) {
-        case 422:
-          toast.error(`Error signing up: ${message}`)
-          break
-        case 429:
-          toast.error(
-            'You have reached the maximum number of requests. Please wait a few minutes and try again.'
-          )
-          break
-        default:
-          toast.error(message)
-          break
-      }
+    switch (status) {
+      case 422:
+        toast.error(
+          `Error ${mode === 'signup' ? 'signing up' : 'signing in'}: ${message}`
+        )
+        break
+      case 429:
+        toast.error(
+          'You have reached the maximum number of requests. Please wait a few minutes and try again.'
+        )
+        break
+      default:
+        toast.error(message)
+        break
     }
   }
 
@@ -39,17 +41,27 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
       if (response.error) {
         handleErrors(response.error)
       } else {
-        toast.success(`Signed up successfully with ${provider}!`)
+        toast.success(
+          `Signed ${
+            mode === 'signup' ? 'up' : 'in'
+          } successfully with ${provider}!`
+        )
+        onAuthSuccess?.()
       }
     } catch (error) {
-      console.error(`Error signing up with ${provider}:`, error)
+      console.error(
+        `Error signing ${mode === 'signup' ? 'up' : 'in'} with ${provider}:`,
+        error
+      )
       handleErrors(error)
     }
   }
 
   const onSubmit = async (data) => {
     try {
-      const response = await client.auth.signUp({
+      const response = await (mode === 'signup'
+        ? client.auth.signUp
+        : client.auth.signIn)({
         email: data.email,
         password: data.password,
       })
@@ -57,18 +69,17 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
       if (response.error) {
         handleErrors(response.error)
       } else {
-        console.log('response: ', response)
-        toast.success('Signed up successfully!')
+        toast.success(`Signed ${mode === 'signup' ? 'up' : 'in'} successfully!`)
+        onAuthSuccess?.()
       }
     } catch (error) {
-      console.error('Error signing up:', error)
+      console.error(`Error signing ${mode === 'signup' ? 'up' : 'in'}:`, error)
       handleErrors(error)
     }
   }
 
   return (
     <div className="w-full max-w-xs">
-      <div>{JSON.stringify({ isAuthenticated })}</div>
       <Form
         onSubmit={onSubmit}
         className="mb-4 flex flex-col items-center justify-center space-y-3 rounded bg-neutral px-10 py-10 shadow-md"
@@ -89,21 +100,23 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
           errorClassName="input-bordered input border-red-500 border-2 transition-all"
           errorStyle={{ color: 'red' }}
         />
-        <Submit className="btn-primary btn w-full">Sign Up</Submit>
+        <Submit className="btn-primary btn w-full">
+          {mode === 'signup' ? 'Sign Up' : 'Sign In'}
+        </Submit>
         <div className="mt-4 flex space-x-3">
           <button
             className="btn-primary btn"
             type="button"
             onClick={() => signInWithProvider('google')}
           >
-            Sign Up with Google
+            {mode === 'signup' ? 'Sign Up' : 'Sign In'} with Google
           </button>
           <button
             className="btn-primary btn"
             type="button"
             onClick={() => signInWithProvider('github')}
           >
-            Sign Up with GitHub
+            {mode === 'signup' ? 'Sign Up' : 'Sign In'} with GitHub
           </button>
         </div>
       </Form>
@@ -111,4 +124,4 @@ const SignUpForm: React.FC<SignUpFormProps> = () => {
   )
 }
 
-export default SignUpForm
+export default AuthForm

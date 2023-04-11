@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof SignUpForm> = (args) => {
-//   return <SignUpForm {...args} />
+// export const generated: ComponentStory<typeof AuthForm> = (args) => {
+//   return <AuthForm {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import SignUpForm from './SignUpForm'
+import AuthForm from './AuthForm'
 
 export const generated = () => {
-  return <SignUpForm />
+  return <AuthForm />
 }
 
 export default {
-  title: 'Components/SignUpForm',
-  component: SignUpForm,
-} as ComponentMeta<typeof SignUpForm>
+  title: 'Components/AuthForm',
+  component: AuthForm,
+} as ComponentMeta<typeof AuthForm>
