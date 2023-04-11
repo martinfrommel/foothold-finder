@@ -2,6 +2,9 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
+  "prisma": {
+    "schema": "./db/schema.prisma"
+  },
   "dependencies": {
     "@redwoodjs/api": "4.4.3",
     "@redwoodjs/auth-supabase-api": "4.4.3",

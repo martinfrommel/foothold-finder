@@ -1,19 +1,183 @@
-datasource db {
-  provider = "postgres"
-  url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_DB_URL")
-}
-
 generator client {
   provider        = "prisma-client-js"
-  binaryTargets   = "native"
+  previewFeatures = ["multiSchema"]
+  binaryTargets   = ["native"]
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
+datasource db {
+  provider  = "postgres"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DB_URL")
+  schemas   = ["public"]
+}
 
-// Enums Start
+model Area {
+  id          Int         @id @default(autoincrement())
+  name        String
+  countryCode String
+  Country     Country     @relation(fields: [countryCode], references: [code])
+  Community   Community[]
+  Crag        Crag[]
+  Gym         Gym[]
+
+  @@schema("public")
+}
+
+model ClimbedRoute {
+  id      Int   @id @default(autoincrement())
+  diaryId Int
+  routeId Int
+  Diary   Diary @relation(fields: [diaryId], references: [id])
+  Route   Route @relation(fields: [routeId], references: [id])
+
+  @@unique([diaryId, routeId])
+  @@schema("public")
+}
+
+model Community {
+  id             Int              @id @default(autoincrement())
+  name           String
+  location       String
+  description    String?
+  rating         Rating?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+  areaId         Int
+  Area           Area             @relation(fields: [areaId], references: [id])
+  CommunityOwner CommunityOwner[]
+
+  @@schema("public")
+}
+
+model CommunityOwner {
+  id Int @id @default(autoincrement())
+  communityId Int
+  userId      String
+  Community   Community @relation(fields: [communityId], references: [id])
+  User        User      @relation(fields: [userId], references: [id])
+
+  @@unique([communityId, userId])
+  @@schema("public")
+}
+
+model Country {
+  code String @id @db.VarChar(2)
+  name String
+  Area Area[]
+
+  @@schema("public")
+}
+
+model Crag {
+  id        Int      @id @default(autoincrement())
+  name      String
+  location  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  areaId    Int
+  cragType  CragType
+  Area      Area     @relation(fields: [areaId], references: [id])
+  Route     Route[]
+
+  @@schema("public")
+}
+
+model Diary {
+  id           Int            @id @default(autoincrement())
+  date         DateTime
+  isPublic     Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime
+  userId       String
+  ClimbedRoute ClimbedRoute[]
+  User         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model Gym {
+  id          Int      @id @default(autoincrement())
+  name        String
+  location    String
+  description String?
+  rating      Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  ownerId     String
+  areaId      Int
+  Area        Area     @relation(fields: [areaId], references: [id])
+  User        User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@schema("public")
+}
+
+model Listing {
+  id          Int              @id @default(autoincrement())
+  title       String
+  description String
+  price       Float
+  condition   ProductCondition
+  images      String[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime
+  userId      String
+  productId   Int
+  Product     Product          @relation(fields: [productId], references: [id])
+  User        User             @relation(fields: [userId], references: [id])
+
+  @@schema("public")
+}
+
+model Product {
+  id          Int              @id @default(autoincrement())
+  name        String
+  category    String
+  brand       String
+  description String?
+  condition   ProductCondition
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime
+  Listing     Listing[]
+
+  @@schema("public")
+}
+
+model Route {
+  id                   Int                      @id @default(autoincrement())
+  name                 String
+  grade                String
+  location             String
+  style                ClimbingStyle
+  gradeYDS             GradeYDS?
+  gradeFont            GradeFont?
+  gradeHueco           GradeHueco?
+  gradeFrenchSport     GradeFrenchSport?
+  sustainabilityRating SustainabilityCondition?
+  description          String?
+  images               String[]
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime
+  cragId               Int
+  ClimbedRoute         ClimbedRoute[]
+  Crag                 Crag                     @relation(fields: [cragId], references: [id])
+
+  @@schema("public")
+}
+
+model User {
+  id             String           @id
+  email          String           @unique
+  name           String?
+  avatar         String?
+  created_at     DateTime         @default(now())
+  updated_at     DateTime
+  CommunityOwner CommunityOwner[]
+  Diary          Diary[]
+  Gym            Gym[]
+  Listing        Listing[]
+
+  @@schema("public")
+}
 
 enum ClimbingStyle {
   Sport
@@ -23,31 +187,16 @@ enum ClimbingStyle {
   Ice
   Mixed
 
+  @@schema("public")
 }
 
-enum GradeYDS {
-  YDS_50
-  YDS_51
-  YDS_52
-  YDS_53
-  YDS_54
-  YDS_55
-  YDS_56
-  YDS_57
-  YDS_58
-  YDS_59
-  YDS_510
-  YDS_511
-  YDS_512
-  YDS_513
-  YDS_514
-  YDS_515
-  YDS_516
-  YDS_517
-  YDS_518
-  YDS_519
-  YDS_520
+enum CragType {
+  Sport
+  Trad
+  Bouldering
+  Mixed
 
+  @@schema("public")
 }
 
 enum GradeFont {
@@ -83,29 +232,7 @@ enum GradeFont {
   Font_9C
   Font_9Cplus
 
-}
-
-enum GradeHueco {
-  Hueco_VB
-  Hueco_V0
-  Hueco_V1
-  Hueco_V2
-  Hueco_V3
-  Hueco_V4
-  Hueco_V5
-  Hueco_V6
-  Hueco_V7
-  Hueco_V8
-  Hueco_V9
-  Hueco_V10
-  Hueco_V11
-  Hueco_V12
-  Hueco_V13
-  Hueco_V14
-  Hueco_V15
-  Hueco_V16
-  Hueco_V17
-
+  @@schema("public")
 }
 
 enum GradeFrenchSport {
@@ -146,6 +273,65 @@ enum GradeFrenchSport {
   FS_9b_plus
   FS_9c
 
+  @@schema("public")
+}
+
+enum GradeHueco {
+  Hueco_VB
+  Hueco_V0
+  Hueco_V1
+  Hueco_V2
+  Hueco_V3
+  Hueco_V4
+  Hueco_V5
+  Hueco_V6
+  Hueco_V7
+  Hueco_V8
+  Hueco_V9
+  Hueco_V10
+  Hueco_V11
+  Hueco_V12
+  Hueco_V13
+  Hueco_V14
+  Hueco_V15
+  Hueco_V16
+  Hueco_V17
+
+  @@schema("public")
+}
+
+enum GradeYDS {
+  YDS_50
+  YDS_51
+  YDS_52
+  YDS_53
+  YDS_54
+  YDS_55
+  YDS_56
+  YDS_57
+  YDS_58
+  YDS_59
+  YDS_510
+  YDS_511
+  YDS_512
+  YDS_513
+  YDS_514
+  YDS_515
+  YDS_516
+  YDS_517
+  YDS_518
+  YDS_519
+  YDS_520
+
+  @@schema("public")
+}
+
+enum GymType {
+  Bouldering
+  RopedClimbing
+  Combined
+
+  @@schema("public")
 }
 
 enum ProductCondition {
@@ -155,21 +341,7 @@ enum ProductCondition {
   Fair
   Poor
 
-}
-
-enum CragType {
-  Sport
-  Trad
-  Bouldering
-  Mixed
-
-}
-
-enum GymType {
-  Bouldering
-  RopedClimbing
-  Combined
-
+  @@schema("public")
 }
 
 enum Rating {
@@ -179,6 +351,7 @@ enum Rating {
   FourStars
   FiveStars
 
+  @@schema("public")
 }
 
 enum SustainabilityCondition {
@@ -188,165 +361,5 @@ enum SustainabilityCondition {
   Poor
   VeryPoor
 
+  @@schema("public")
 }
-
-//Enums end
-
-// MODELS START
-
-model User {
-  id        String           @id @db.Uuid
-  email     String           @unique
-  name      String?
-  avatar    String?
-  createdAt DateTime         @default(now()) @map("created_at")
-  updatedAt DateTime         @updatedAt @map("updated_at")
-  diaries   Diary[]
-  ownedGyms Gym[]            @relation("OwnedGyms")
-  Listing   Listing[]
-  ownedComs CommunityOwner[]
-
-}
-
-model Diary {
-  id            Int            @id @default(autoincrement())
-  date          DateTime
-  isPublic      Boolean        @default(false)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId        String
-  climbedRoutes ClimbedRoute[]
-
-}
-
-model Route {
-  id                   Int                      @id @default(autoincrement())
-  name                 String
-  grade                String
-  location             String
-  style                ClimbingStyle
-  gradeYDS             GradeYDS?
-  gradeFont            GradeFont?
-  gradeHueco           GradeHueco?
-  gradeFrenchSport     GradeFrenchSport?
-  sustainabilityRating SustainabilityCondition?
-  description          String?
-  images               String[]
-  createdAt            DateTime                 @default(now())
-  updatedAt            DateTime                 @updatedAt
-  crag                 Crag                     @relation(fields: [cragId], references: [id])
-  cragId               Int
-  diaries              ClimbedRoute[]
-
-}
-
-model ClimbedRoute {
-  id      Int   @id @default(autoincrement())
-  diaryId Int
-  routeId Int
-  diary   Diary @relation(fields: [diaryId], references: [id])
-  route   Route @relation(fields: [routeId], references: [id])
-
-  @@unique([diaryId, routeId])
-}
-
-model Crag {
-  id        Int      @id @default(autoincrement())
-  name      String
-  location  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  routes    Route[]
-  area      Area     @relation(fields: [areaId], references: [id])
-  areaId    Int
-  cragType  CragType
-
-}
-
-model Area {
-  id          Int         @id @default(autoincrement())
-  name        String
-  country     Country     @relation(fields: [countryCode], references: [code])
-  countryCode String
-  crags       Crag[]
-  gyms        Gym[]
-  communities Community[]
-
-}
-
-model Country {
-  code  String @id @db.VarChar(2)
-  name  String
-  areas Area[]
-
-}
-
-model Gym {
-  id          Int      @id @default(autoincrement())
-  name        String
-  location    String
-  description String?
-  rating      Float?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  owner       User     @relation("OwnedGyms", fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  ownerId     String
-  area        Area     @relation(fields: [areaId], references: [id])
-  areaId      Int
-
-}
-
-model Community {
-  id          Int     @id @default(autoincrement())
-  name        String
-  location    String
-  description String?
-  rating      Rating?
-
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  owners    CommunityOwner[]
-  area      Area             @relation(fields: [areaId], references: [id])
-  areaId    Int
-
-}
-
-model CommunityOwner {
-  communityId Int
-  community   Community @relation(fields: [communityId], references: [id])
-  userId      String
-  User        User      @relation(fields: [userId], references: [id])
-
-  @@id([communityId, userId])
-}
-
-model Listing {
-  id          Int              @id @default(autoincrement())
-  title       String
-  description String
-  price       Float
-  condition   ProductCondition
-  images      String[]
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  user        User             @relation(fields: [userId], references: [id])
-  userId      String
-  product     Product          @relation(fields: [productId], references: [id])
-  productId   Int
-
-}
-
-model Product {
-  id          Int              @id @default(autoincrement())
-  name        String
-  category    String
-  brand       String
-  description String?
-  condition   ProductCondition
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  listings    Listing[]
-
-}
-

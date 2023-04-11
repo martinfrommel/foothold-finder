@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client"
 import { MergePrismaWithSdlTypes, MakeRelationsOptional } from '@redwoodjs/api'
-import { User as PrismaUser, Diary as PrismaDiary, Route as PrismaRoute, ClimbedRoute as PrismaClimbedRoute, Crag as PrismaCrag, Area as PrismaArea, Country as PrismaCountry, Gym as PrismaGym, Community as PrismaCommunity, CommunityOwner as PrismaCommunityOwner, Listing as PrismaListing, Product as PrismaProduct } from '@prisma/client'
+import { Area as PrismaArea, ClimbedRoute as PrismaClimbedRoute, Community as PrismaCommunity, CommunityOwner as PrismaCommunityOwner, Country as PrismaCountry, Crag as PrismaCrag, Diary as PrismaDiary, Gym as PrismaGym, Listing as PrismaListing, Product as PrismaProduct, Route as PrismaRoute, User as PrismaUser } from '@prisma/client'
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { RedwoodGraphQLContext } from '@redwoodjs/graphql-server/dist/functions/types';
 export type Maybe<T> = T | null;

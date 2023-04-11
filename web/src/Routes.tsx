@@ -33,7 +33,7 @@ export const authNavRoutes = [{ label: 'Back', route: () => routes.home() }]
 const Routes = () => {
   return (
     <Router useAuth={useAuth}>
-      <Set wrap={FrontendLayout}>
+      <Set wrap={FrontendLayout} prerender>
         <Route path="/about" page={AboutPage} name="about" />
         <Route path="/" page={HomePage} name="home" />
         <Route path="/features" page={FeaturesPage} name="features" />
