@@ -175,7 +175,15 @@ model User {
   Diary          Diary[]
   Gym            Gym[]
   Listing        Listing[]
+  Roles UserRole @default(User)
 
+  @@schema("public")
+}
+
+enum UserRole {
+  User
+  Moderator
+  Admin
   @@schema("public")
 }
 
