@@ -1,4 +1,6 @@
 // Import necessary form components and toast function
+import { Button } from 'react-daisyui'
+
 import {
   Form,
   TextField,
@@ -60,10 +62,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
       if (response.error) {
         handleErrors(response.error)
       } else {
-        toast.success(
-          `Signed ${
-            mode === 'signup' ? 'up' : 'in'
-          } successfully with ${provider}!`
+        toast.loading(
+          `Signing ${mode === 'signup' ? 'up' : 'in'} with ${provider}!`
         )
         onAuthSuccess?.()
       }
@@ -104,18 +104,17 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
   // Render form JSX
   return (
     <div className="w-full max-w-md">
-      {/* Render heading based on mode prop */}
-      {mode === 'signup' || mode === 'signin' ? (
-        <h1 className="my-2 text-center text-xl font-bold">
-          {mode === 'signup' ? 'Sign Up' : 'Sign In'}
-        </h1>
-      ) : null}
-
       {/* Render RedwoodJS Form component with appropriate fields */}
       <Form
         onSubmit={onSubmit}
-        className="mx-2 flex flex-col items-center justify-center space-y-3 rounded bg-neutral px-3 py-10 shadow-md"
+        className="flex flex-col items-center justify-center space-y-3 rounded bg-neutral py-10 shadow-md"
       >
+        {/* Render heading based on mode prop */}
+        {mode === 'signup' || mode === 'signin' ? (
+          <h1 className="my-2 text-center text-2xl font-bold text-base-100">
+            {mode === 'signup' ? 'Sign Up' : 'Sign In'}
+          </h1>
+        ) : null}
         {mode === 'signup' && (
           <>
             {/* Render fields for additional sign up information */}
@@ -172,18 +171,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode, onAuthSuccess }) => {
           errorClassName="input-bordered input border-red-500 border-2 transition-all"
         />
         {/* Render submit button */}
-        <Submit className="btn-primary btn w-full">
+        <Submit className="btn-primary btn">
           {mode === 'signup' ? 'Sign Up' : 'Sign In'}
         </Submit>
         {/* Render buttons for signing in with third-party providers */}
         <div className="mt-4 flex space-x-3">
-          <button
-            className="btn-primary btn"
+          <Button
+            color="primary"
             type="button"
             onClick={() => signInWithProvider('google')}
           >
             {mode === 'signup' ? 'Sign Up' : 'Sign In'} with Google
-          </button>
+          </Button>
           {/* <button
         className="btn-primary btn"
         type="button"

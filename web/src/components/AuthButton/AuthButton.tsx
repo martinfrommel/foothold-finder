@@ -1,7 +1,6 @@
 import { Button } from 'react-daisyui'
 
-import { Link } from '@redwoodjs/router'
-import { routes } from '@redwoodjs/router'
+import { Link, routes, useLocation } from '@redwoodjs/router'
 
 import { useAuth } from 'src/auth'
 
@@ -39,16 +38,25 @@ const AuthButton: React.FC<AuthButtonProps> = ({
     signUp: routes.signUp(),
     dashboard: routes.dashboard(),
   }
+  const { pathname } = useLocation()
 
   if (isAuthenticated) {
     return (
       <>
-        <Link
-          to={buttonRoute.dashboard}
-          className={`btn ${buttonClasses.dashboard}`}
-        >
-          {buttonText.dashboard}
-        </Link>
+        {pathname === buttonRoute.dashboard ? (
+          <span
+            className={`btn ${buttonClasses.dashboard} btn-disabled cursor-auto`}
+          >
+            {buttonText.dashboard}
+          </span>
+        ) : (
+          <Link
+            to={buttonRoute.dashboard}
+            className={`btn ${buttonClasses.dashboard}`}
+          >
+            {buttonText.dashboard}
+          </Link>
+        )}
         <Button className={`btn ${buttonClasses.logout} ml-2`} onClick={logOut}>
           {buttonText.logout}
         </Button>

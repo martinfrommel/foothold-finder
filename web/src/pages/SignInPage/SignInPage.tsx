@@ -1,3 +1,4 @@
+import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import AuthForm from 'src/components/AuthForm/AuthForm'
@@ -7,7 +8,12 @@ const SignInPage = () => {
     <>
       <MetaTags title="SignIn" description="SignIn page" />
 
-      <AuthForm mode="signin" />
+      <AuthForm
+        mode="signin"
+        onAuthSuccess={() => {
+          navigate(routes.dashboard())
+        }}
+      />
     </>
   )
 }

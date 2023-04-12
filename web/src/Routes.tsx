@@ -41,18 +41,19 @@ const Routes = () => {
           <Route path="/features" page={FeaturesPage} name="features" />
           <Route notfound page={NotFoundPage} />
         </Set>
-      </Set>
-      <Set unauthenticated="signIn" wrap={BackendLayout} private>
-        <Route path="/community-details" page={CommunityDetailsPage} name="communityDetails" />
-        <Route path="/communities" page={CommunitiesPage} name="communities" />
-        <Route path="/gym-details" page={GymDetailsPage} name="gymDetails" />
-        <Route path="/gyms" page={GymsPage} name="gyms" />
-        <Route path="/profile" page={ProfilePage} name="profile" />
-        <Route path="/dashboard" page={DashboardPage} name="dashboard" />
-      </Set>
-      <Set wrap={AuthLayout}>
-        <Route path="/sign-in" page={SignInPage} name="signIn" />
-        <Route path="/sign-up" page={SignUpPage} name="signUp" />
+
+        <Set unauthenticated="signIn" wrap={BackendLayout} private>
+          <Route path="/community-details" page={CommunityDetailsPage} name="communityDetails" />
+          <Route path="/communities" page={CommunitiesPage} name="communities" />
+          <Route path="/gym-details" page={GymDetailsPage} name="gymDetails" />
+          <Route path="/gyms" page={GymsPage} name="gyms" />
+          <Route path="/profile" page={ProfilePage} name="profile" />
+          <Route path="/dashboard" page={DashboardPage} name="dashboard" />
+        </Set>
+        <Set wrap={AuthLayout}>
+          <Route path="/sign-in" page={SignInPage} name="signIn" />
+          <Route path="/sign-up" page={SignUpPage} name="signUp" />
+        </Set>
       </Set>
     </Router>
   )
